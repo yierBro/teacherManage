@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpx.mapper.TeacherMapper">
+
+    <resultMap id="teacherMap" type="com.cpx.entity.Teacher">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="work_name" property="workName"/>
+        <result column="status" property="status"/>
+        <result column="cid" property="cid"/>
+        <result column="del" property="del"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.cpx.entity.Teacher">
+        INSERT INTO teachers(name,sex,work_name,status,cid,del)
+        VALUES(#{name},#{sex},#{workName},#{status},#{cid},0)
+    </insert>
+
+    <select id="findAllActive" resultMap="teacherMap">
+        SELECT * FROM teachers WHERE del = 0
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="teacherMap">
+        SELECT * FROM teachers WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.cpx.entity.Teacher">
+        UPDATE teachers
+        SET name=#{name},
+            sex=#{sex},
+            work_name=#{workName},
+            status=#{status},
+            cid=#{cid}
+        WHERE id=#{id}
+    </update>
+
+    <update id="logicalDelete" parameterType="int">
+        UPDATE teachers SET del=1 WHERE id=#{id}
+    </update>
+
+</mapper>
